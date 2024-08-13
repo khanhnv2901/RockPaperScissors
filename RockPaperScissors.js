@@ -20,46 +20,61 @@ function getHumanChoice() {
 
 // play a single round
 function playRound(humanChoice, computerChoice){
+
+    let resultText = "";
+
+    // Display what the human chose
+    document.getElementById('human-chose').textContent = `You chose: ${humanChoice}`;
+    document.getElementById('computer-chose').textContent = `Computer chose: ${computerChoice}`;
+
+
+
     if (humanChoice === computerChoice){
-        return "It's a tie!"
-    }
-    
-    if ((humanChoice === "rock" && computerChoice === "paper") ||
+        resultText = "It's a tie!"
+    } else if ((humanChoice === "rock" && computerChoice === "paper") ||
     (humanChoice === "paper" && computerChoice === "scissors")||
     (humanChoice === "scissors" && computerChoice === "rock"))
     {
         computerScore += 1;
-        return `You lose! ${computerChoice} beats ${humanChoice}.`
+        resultText = `You lose! ${computerChoice} beats ${humanChoice}.`
     } else {
         humanScore +=1;
-        return `You win! ${humanChoice} beats ${computerChoice}.`
+        resultText = `You win! ${humanChoice} beats ${computerChoice}.`
+    }
+
+    document.getElementById('round-result').textContent = resultText;
+    document.getElementById('scoreboard').textContent = `Human: ${humanScore} | Computer: ${computerScore}`;
+
+    // Check if someone won the game
+    if (humanScore === 5 || computerScore === 5) {
+        declareWinner();
     }
 }
 
-function playGame(roundNumber){
-    for(let i = 0; i < roundNumber; i++){
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
+function declareWinner() {
+    const gameWinnerText = humanScore === 5 ? "You win the game!" : "Computer wins the game!";
+    document.getElementById('game-winner').textContent = gameWinnerText;
 
-        console.log("You chose: ", humanSelection);
-        console.log("Computer chose: ", computerSelection);
-        console.log(playRound(humanSelection, computerSelection));
-    }
-
-    console.log(`Final Results: Human ${humanScore} | Computer ${computerScore}`);
-
-    if (humanScore > computerScore) {
-        console.log("You win the game!");
-    } else if (computerScore > humanScore) {
-        console.log("Computer wins the game!");
-    } else {
-        console.log("The game is a tie!");
-    }
+    // Disable buttons after game is won
+    document.querySelectorAll('button').forEach(button => {
+        button.disabled = true;
+    });
 }
 
-playGame(5);
+function playGame(){
+
+    const rockBtn = document.getElementById("rock-btn");
+    const paperBtn = document.getElementById("paper-btn");
+    const scissorsBtn = document.getElementById("scissors-btn");
+
+    rockBtn.addEventListener("click", () => playRound("rock", getComputerChoice()));
+    paperBtn.addEventListener("click", () => playRound("paper", getComputerChoice()));
+    scissorsBtn.addEventListener("click", () => playRound("scissors", getComputerChoice()));
+
+}
 
 
 
+playGame();
 
 
