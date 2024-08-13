@@ -57,7 +57,12 @@ function playGame(roundNumber){
     }
 }
 
-playGame(5);
+let rounds = parseInt(prompt("How many rounds do you want to play?"), 5);
+while (isNaN(rounds) || rounds <= 0) {
+    rounds = parseInt(prompt("Please enter a valid number of rounds:"), 10);
+}
+
+playGame(rounds);
 
 
 
